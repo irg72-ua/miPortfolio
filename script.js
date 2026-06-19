@@ -179,23 +179,4 @@
     statsObserver.observe(statsSection);
   }
 
-  /* ------------------------------------------------------------------ *
-   * Efecto 3D sutil en las tarjetas de proyecto.
-   * Solo en dispositivos con puntero fino (ratón) y sin reduced-motion.
-   * ------------------------------------------------------------------ */
-  const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
-  if (finePointer && !reduceMotion) {
-    document.querySelectorAll(".project-card").forEach((card) => {
-      card.addEventListener("mousemove", (e) => {
-        const rect = card.getBoundingClientRect();
-        const rotateX = (e.clientY - rect.top - rect.height / 2) / 30;
-        const rotateY = (rect.width / 2 - (e.clientX - rect.left)) / 30;
-        card.style.transform =
-          `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-8px)`;
-      });
-      card.addEventListener("mouseleave", () => {
-        card.style.transform = "";
-      });
-    });
-  }
 })();
