@@ -13,9 +13,32 @@
   --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
   --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   --gradient-accent: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  /* Componentes (cambian con el tema) */
+  --header-bg: rgba(255, 255, 255, 0.8);
+  --card-bg: rgba(255, 255, 255, 0.5);
+  --footer-bg: rgba(15, 23, 42, 0.02);
 }
+
+/* Variables del tema oscuro (reutilizadas por el toggle manual y por el sistema) */
+:root[data-theme="dark"] {
+  --bg: #0b1220;
+  --fg: #e5e7eb;
+  --muted: #94a3b8;
+  --border: #1e293b;
+  --primary: #60a5fa;
+  --primary-dark: #3b82f6;
+  --accent: #a78bfa;
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.6);
+  --header-bg: rgba(11, 18, 32, 0.8);
+  --card-bg: rgba(255, 255, 255, 0.03);
+  --footer-bg: rgba(255, 255, 255, 0.02);
+}
+/* Si no hay elección manual, seguir la preferencia del sistema */
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-theme="light"]):not([data-theme="dark"]) {
     --bg: #0b1220;
     --fg: #e5e7eb;
     --muted: #94a3b8;
@@ -27,6 +50,9 @@
     --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
     --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
     --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.6);
+    --header-bg: rgba(11, 18, 32, 0.8);
+    --card-bg: rgba(255, 255, 255, 0.03);
+    --footer-bg: rgba(255, 255, 255, 0.02);
   }
 }
 * { box-sizing: border-box; }
@@ -99,13 +125,8 @@ body {
   position: sticky;
   top: 0;
   z-index: 100;
-  background: rgba(255, 255, 255, 0.8);
+  background: var(--header-bg);
   transition: all 0.3s ease;
-}
-@media (prefers-color-scheme: dark) {
-  .site-header {
-    background: rgba(11, 18, 32, 0.8);
-  }
 }
 .topnav {
   display: flex; align-items: center; justify-content: space-between;
@@ -316,7 +337,8 @@ body {
   border: 1px solid var(--border);
   border-radius: 16px;
   padding: 1.5rem;
-  background: rgba(255,255,255,.5);
+  background: var(--card-bg);
+  backdrop-filter: blur(10px);
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   position: relative;
   overflow: hidden;
@@ -336,12 +358,6 @@ body {
 .card:hover::after {
   opacity: 1;
   transform: rotateZ(60deg) translate(1em, -9em);
-}
-@media (prefers-color-scheme: dark) {
-  .card {
-    background: rgba(255,255,255,.03);
-    backdrop-filter: blur(10px);
-  }
 }
 .card::before {
   content: '';
@@ -512,13 +528,8 @@ body {
   text-align: center;
   color: var(--muted);
   border-top: 1px solid var(--border);
-  background: rgba(15, 23, 42, 0.02);
+  background: var(--footer-bg);
   transition: all 0.3s ease;
-}
-@media (prefers-color-scheme: dark) {
-  .site-footer {
-    background: rgba(255, 255, 255, 0.02);
-  }
 }
 .footer-content {
   display: flex;
@@ -724,3 +735,146 @@ html {
     height: 44px;
   }
 }
+
+/* Theme toggle */
+.theme-toggle {
+  margin-left: 1rem;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: rgba(37, 99, 235, 0.05);
+  color: var(--fg);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+.theme-toggle:hover {
+  color: var(--primary);
+  border-color: var(--primary);
+  transform: translateY(-2px) rotate(15deg);
+}
+.theme-toggle svg { width: 18px; height: 18px; }
+.theme-toggle .icon-sun { display: none; }
+.theme-toggle .icon-moon { display: block; }
+:root[data-theme="dark"] .theme-toggle .icon-sun { display: block; }
+:root[data-theme="dark"] .theme-toggle .icon-moon { display: none; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]):not([data-theme="dark"]) .theme-toggle .icon-sun { display: block; }
+  :root:not([data-theme="light"]):not([data-theme="dark"]) .theme-toggle .icon-moon { display: none; }
+}
+
+/* Timeline (Experiencia / Formación) */
+.timeline {
+  position: relative;
+  margin: 1rem 0 0;
+  padding-left: 2rem;
+}
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 6px;
+  top: 6px;
+  bottom: 6px;
+  width: 2px;
+  background: var(--gradient-primary);
+  border-radius: 2px;
+}
+.timeline-item {
+  position: relative;
+  padding: 0 0 1.6rem 0.4rem;
+}
+.timeline-item:last-child { padding-bottom: 0; }
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  left: -1.6rem;
+  top: 4px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--bg);
+  border: 3px solid var(--primary);
+  transition: all 0.3s ease;
+}
+.timeline-item:hover::before {
+  transform: scale(1.2);
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15);
+}
+.timeline-date {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--primary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.timeline-item h3 {
+  margin: 0.2rem 0 0.2rem;
+  font-size: 1.1rem;
+}
+.timeline-item .place {
+  font-size: 0.9rem;
+  color: var(--muted);
+  margin: 0 0 0.4rem;
+}
+.timeline-item p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+/* Formulario de contacto */
+.contact-wrap {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+@media (max-width: 720px) {
+  .contact-wrap { grid-template-columns: 1fr; }
+}
+.contact-intro p { color: var(--muted); margin: 0 0 1rem; }
+.contact-methods { list-style: none; padding: 0; margin: 0; }
+.contact-methods li { margin-bottom: 0.7rem; }
+.contact-methods a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  color: var(--fg);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+.contact-methods a:hover { color: var(--primary); }
+.contact-methods svg { width: 18px; height: 18px; color: var(--primary); }
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+.contact-form label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: -0.4rem;
+}
+.contact-form input,
+.contact-form textarea {
+  width: 100%;
+  padding: 0.7rem 0.9rem;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--card-bg);
+  color: var(--fg);
+  font: inherit;
+  transition: all 0.3s ease;
+}
+.contact-form input:focus,
+.contact-form textarea:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+.contact-form textarea { resize: vertical; min-height: 120px; }
+.contact-form button { align-self: start; cursor: pointer; }
