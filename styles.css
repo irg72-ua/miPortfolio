@@ -504,6 +504,7 @@ body {
 .demo-placeholder:hover {
   border-color: var(--primary);
   background: linear-gradient(135deg, rgba(37, 99, 235, 0.15) 0%, rgba(124, 58, 237, 0.15) 100%);
+  transform: scale(1.02);
 }
 .demo-placeholder svg {
   width: 48px;
@@ -604,6 +605,29 @@ body {
 
 html {
   scroll-behavior: smooth;
+}
+/* La cabecera fija no debe tapar el título al saltar por anclas */
+section[id] {
+  scroll-margin-top: 80px;
+}
+
+/* Enlace de salto al contenido (accesibilidad): visible solo con teclado */
+.skip-link {
+  position: absolute;
+  left: 0.5rem;
+  top: -3rem;
+  z-index: 1000;
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  background: var(--primary);
+  color: #fff;
+  font-weight: 600;
+  text-decoration: none;
+  box-shadow: var(--shadow-lg);
+  transition: top 0.2s ease;
+}
+.skip-link:focus {
+  top: 0.5rem;
 }
 :focus-visible {
   outline: 3px solid rgba(37,99,235,.45);
