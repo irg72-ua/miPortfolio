@@ -418,8 +418,6 @@ body {
 .project-card {
   display: flex;
   flex-direction: column;
-  will-change: transform;
-  transform-style: preserve-3d;
 }
 
 .project-header {
