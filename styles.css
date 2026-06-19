@@ -526,12 +526,20 @@ body {
   font-size: 0.9rem;
 }
 
+.skill-cat {
+  margin: 1.6rem 0 0;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: var(--muted);
+}
 .skills {
-  margin: 1rem 0 0;
+  margin: 0.8rem 0 0;
   padding: 0;
   list-style: none;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   gap: 0.8rem;
 }
 .skills li {
@@ -547,15 +555,10 @@ body {
 }
 .skills li:hover {
   background: rgba(37, 99, 235, 0.1);
-  transform: translateY(-2px);
   border-color: var(--primary);
 }
 .skills li i {
   font-size: 1.4rem;
-  transition: transform 0.3s ease;
-}
-.skills li:hover i {
-  transform: scale(1.2) rotate(5deg);
 }
 @media (max-width: 640px) {
   .skills {
