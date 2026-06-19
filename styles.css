@@ -69,8 +69,50 @@ body {
   overflow-x: hidden;
 }
 .container { max-width: var(--container); margin: 0 auto; padding: 0 clamp(1.25rem, 4.5vw, 5rem); }
-/* Limita la longitud de línea de los textos largos para que sigan siendo legibles a todo el ancho */
-#sobre-mi > p { max-width: 80ch; }
+/* "Sobre mí" en dos columnas: biografía + tarjeta de resumen (rellena el ancho) */
+.about-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(340px, 0.82fr);
+  gap: clamp(2rem, 4vw, 4rem);
+  align-items: start;
+  margin-bottom: 1.4rem;
+}
+.about-text { max-width: 70ch; }
+.about-text p { margin: 0 0 1.1rem; }
+.about-text p:last-child { margin-bottom: 0; }
+.about-card {
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--card-bg);
+  padding: clamp(1.3rem, 2vw, 1.9rem);
+}
+.about-card-title {
+  margin: 0 0 1.2rem;
+  font-size: .78rem;
+  font-weight: 800;
+  letter-spacing: .7px;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.about-facts {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.2rem 1.4rem;
+}
+.about-facts li { display: flex; gap: .7rem; align-items: flex-start; }
+.about-facts .fact-ic { font-size: 1.3rem; line-height: 1.1; flex-shrink: 0; }
+.about-facts strong { display: block; font-size: .95rem; }
+.about-facts small { color: var(--muted); font-size: .82rem; line-height: 1.35; display: block; margin-top: .15rem; }
+.about-card-links { display: flex; gap: .6rem; margin-top: 1.5rem; flex-wrap: wrap; }
+@media (max-width: 860px) {
+  .about-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 520px) {
+  .about-facts { grid-template-columns: 1fr; }
+}
 
 /* Animaciones */
 @keyframes fadeIn {
