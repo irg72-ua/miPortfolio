@@ -62,21 +62,15 @@
     revealObserver.observe(section);
   });
 
-  document.querySelectorAll(".card").forEach((card, index) => {
-    card.classList.add("scroll-reveal");
-    card.style.transitionDelay = `${index * 0.1}s`;
-    revealObserver.observe(card);
-  });
-
-  /* Animación inicial del hero */
-  const hero = document.querySelector(".hero");
-  if (hero && !reduceMotion) {
-    hero.style.opacity = "0";
-    hero.style.transform = "translateY(20px)";
+  /* Animación inicial del billboard */
+  const billboard = document.querySelector(".billboard");
+  if (billboard && !reduceMotion) {
+    billboard.style.opacity = "0";
+    billboard.style.transform = "translateY(20px)";
     setTimeout(() => {
-      hero.style.transition = "all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275)";
-      hero.style.opacity = "1";
-      hero.style.transform = "translateY(0)";
+      billboard.style.transition = "all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275)";
+      billboard.style.opacity = "1";
+      billboard.style.transform = "translateY(0)";
     }, 100);
   }
 
@@ -178,5 +172,74 @@
     );
     statsObserver.observe(statsSection);
   }
+
+  /* ------------------------------------------------------------------ *
+   * Buscador de proyectos: filtra las tarjetas en vivo (estilo Netflix)
+   * ------------------------------------------------------------------ */
+  const projectSearch = document.getElementById("projectSearch");
+  if (projectSearch) {
+    const cards = Array.from(document.querySelectorAll(".nf-card"));
+    const rows = Array.from(document.querySelectorAll("[data-row]"));
+    const noResults = document.querySelector(".nf-noresults");
+    const queryOut = document.getElementById("nfQuery");
+
+    const applyFilter = () => {
+      const q = projectSearch.value.trim().toLowerCase();
+      cards.forEach((card) => {
+        const haystack = (card.dataset.search || card.textContent).toLowerCase();
+        card.classList.toggle("is-hidden", q !== "" && !haystack.includes(q));
+      });
+      let anyVisible = false;
+      rows.forEach((row) => {
+        const visible = row.querySelector(".nf-card:not(.is-hidden)") !== null;
+        row.classList.toggle("is-hidden", !visible);
+        if (visible) anyVisible = true;
+      });
+      if (noResults) {
+        noResults.hidden = anyVisible || q === "";
+        if (queryOut) queryOut.textContent = projectSearch.value.trim();
+      }
+    };
+
+    projectSearch.addEventListener("input", applyFilter);
+  }
+
+  /* ------------------------------------------------------------------ *
+   * Filas horizontales: desplazamiento con flechas + estado de los botones
+   * ------------------------------------------------------------------ */
+  document.querySelectorAll(".nf-row-scroller").forEach((scroller) => {
+    const track = scroller.querySelector(".nf-track");
+    const prev = scroller.querySelector(".nf-prev");
+    const next = scroller.querySelector(".nf-next");
+    if (!track) return;
+
+    const step = () => Math.max(track.clientWidth * 0.85, 280);
+    const updateArrows = () => {
+      const maxScroll = track.scrollWidth - track.clientWidth - 4;
+      if (prev) prev.disabled = track.scrollLeft <= 4;
+      if (next) next.disabled = track.scrollLeft >= maxScroll;
+    };
+
+    const behavior = reduceMotion ? "auto" : "smooth";
+    if (prev) prev.addEventListener("click", () => track.scrollBy({ left: -step(), behavior }));
+    if (next) next.addEventListener("click", () => track.scrollBy({ left: step(), behavior }));
+
+    let rowTicking = false;
+    track.addEventListener(
+      "scroll",
+      () => {
+        if (!rowTicking) {
+          window.requestAnimationFrame(() => {
+            updateArrows();
+            rowTicking = false;
+          });
+          rowTicking = true;
+        }
+      },
+      { passive: true }
+    );
+    window.addEventListener("resize", updateArrows, { passive: true });
+    updateArrows();
+  });
 
 })();
