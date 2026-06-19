@@ -7,7 +7,7 @@
   --primary-dark: #5b21b6;
   --primary-rgb: 109, 40, 217;
   --accent: #ec4899;
-  --container: 1100px;
+  --container: 1920px;
   --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
   --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
   --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
@@ -68,7 +68,9 @@ body {
   line-height: 1.6;
   overflow-x: hidden;
 }
-.container { max-width: var(--container); margin: 0 auto; padding: 0 1rem; }
+.container { max-width: var(--container); margin: 0 auto; padding: 0 clamp(1.25rem, 4.5vw, 5rem); }
+/* Limita la longitud de línea de los textos largos para que sigan siendo legibles a todo el ancho */
+#sobre-mi > p { max-width: 80ch; }
 
 /* Animaciones */
 @keyframes fadeIn {
@@ -822,6 +824,7 @@ section[id] {
   grid-template-columns: 1fr 1fr;
   gap: 2rem;
   align-items: start;
+  max-width: 1100px;
 }
 @media (max-width: 720px) {
   .contact-wrap { grid-template-columns: 1fr; }
